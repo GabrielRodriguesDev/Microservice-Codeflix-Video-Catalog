@@ -71,7 +71,7 @@ namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
         {
             var validCategory = _categoryTestFixture.GetValidCategory();
             Action action = () => new DomainEntity.Category(name!, validCategory.Description);
-            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
+            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be null or empty");
             
         }
 
@@ -81,7 +81,7 @@ namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
         {
             var validCategory = _categoryTestFixture.GetValidCategory();
             Action action = () => new DomainEntity.Category(validCategory.Name, null!);
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should not be empty or null");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should not be null");
 
         }
 
@@ -124,7 +124,7 @@ namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
             var validCategory = _categoryTestFixture.GetValidCategory();
             var invalidDescription = String.Join(null, Enumerable.Range(1, 10001).Select(x => "a").ToArray());
             Action action = () => new DomainEntity.Category(validCategory.Name, invalidDescription!);
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10.000 characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10000 characters long");
         }
 
         [Fact(DisplayName = nameof(Activate))]
@@ -190,7 +190,7 @@ namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
             var category = _categoryTestFixture.GetValidCategory();
             Action action = () => category.Update(name!);
 
-            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
+            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be null or empty");
         }
 
         [Theory(DisplayName = nameof(UpdateErrorWhenNameIsLessThan3Characters))]
@@ -232,7 +232,7 @@ namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
 
             Action action = () => category.Update(_categoryTestFixture.GetValidCategoryName(), invalidDescription); ;
 
-            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10.000 characters long");
+            action.Should().Throw<EntityValidationException>().WithMessage("Description should be less or equal 10000 characters long");
         } 
     }
 }
