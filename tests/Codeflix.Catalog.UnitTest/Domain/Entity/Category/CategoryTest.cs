@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Xunit;
 using DomainEntity = Codeflix.Catalog.Domain.Entity;
-
+ 
 namespace Codeflix.Catalog.UnitTest.Domain.Entity.Category
 {
     /* Utilizando Package FluentAssertion para os testes (só para ajudar na legibilidade, não muda o resultado).*/
