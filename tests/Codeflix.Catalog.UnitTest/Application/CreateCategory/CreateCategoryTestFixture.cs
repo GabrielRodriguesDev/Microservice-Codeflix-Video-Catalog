@@ -1,10 +1,9 @@
-﻿using Codeflix.Catalog.UnitTest.Common;
-using DomainEntity = Codeflix.Catalog.Domain.Entity;
-using Xunit;
+﻿using Codeflix.Catalog.Application.Interfaces;
 using Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
-using Moq;
 using Codeflix.Catalog.Domain.Repository;
-using Codeflix.Catalog.Application.Interfaces;
+using Codeflix.Catalog.UnitTest.Common;
+using Moq;
+using Xunit;
 
 namespace Codeflix.Catalog.UnitTest.Application.CreateCategory;
 
@@ -15,7 +14,7 @@ public class CreateCategoryTestFixtureCollection
 
 public class CreateCategoryTestFixture : BaseFixture
 {
-	public CreateCategoryTestFixture() : base() {}
+    public CreateCategoryTestFixture() : base() { }
 
     public String GetValidCategoryName()
     {
@@ -45,6 +44,51 @@ public class CreateCategoryTestFixture : BaseFixture
                     GetValidCategoryDescription(),
                     GetRandomBoolean()
                );
+
+    public CreateCategoryInput GetInvalidInputShortName()
+    {
+        var invalidIpuntShortName = GetInput();
+        invalidIpuntShortName.Name = invalidIpuntShortName.Name.Substring(0, 2);
+
+       return invalidIpuntShortName;
+    }
+
+    public CreateCategoryInput GetInvalidInputTooLongName()
+    {
+        var invalidIpuntTooLongName = GetInput();
+
+        while (invalidIpuntTooLongName.Name.Length <= 255)
+            invalidIpuntTooLongName.Name = $"{invalidIpuntTooLongName.Name} {Faker.Commerce.ProductName()}";
+
+        return invalidIpuntTooLongName;
+    }
+
+    public CreateCategoryInput GetInvalidInputNameNull()
+    {
+        var invalidInputNameNull = GetInput();
+        invalidInputNameNull.Name = null!;
+
+        return invalidInputNameNull;
+    }
+
+    public CreateCategoryInput GetInvalidInputDescriptionNull()
+    {
+        var invalidInputDescriptionNull = GetInput();
+        invalidInputDescriptionNull.Description = null!;
+
+        return invalidInputDescriptionNull;
+    }
+
+    public CreateCategoryInput GetInvalidInputTooLongDescription()
+    {
+        var invalidIpuntTooLongDescription = GetInput();
+
+        while (invalidIpuntTooLongDescription.Description.Length <= 10000)
+            invalidIpuntTooLongDescription.Description = $"{invalidIpuntTooLongDescription.Description} {Faker.Commerce.ProductDescription()}";
+
+        return invalidIpuntTooLongDescription;
+    }
+
 
     public Mock<IUnitOfWork> GetUnitOfWorkMock()
         => new Mock<IUnitOfWork>();

@@ -1,7 +1,6 @@
-﻿using Codeflix.Catalog.Application.Interfaces;
+﻿using Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 using Codeflix.Catalog.Domain.Entity;
-using Codeflix.Catalog.Domain.Repository;
-using Codeflix.Catalog.UnitTest.Domain.Entity.Category;
+using Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -39,13 +38,13 @@ public class CreateCategoryTest : IClassFixture<CreateCategoryTestFixture>
          * Times.Once -> Se só foi chamado uma vez.
          */
 
-        repositoryMock.Verify( 
+        repositoryMock.Verify(
             respository => respository.Insert(
                 It.IsAny<Category>(),
                 It.IsAny<CancellationToken>()
-            ), 
+            ),
             Times.Once
-        ); 
+        );
 
         /*
          * Teste abaixo segue a mesma idéia do teste de cima.
@@ -64,5 +63,25 @@ public class CreateCategoryTest : IClassFixture<CreateCategoryTestFixture>
         output.IsActive.Should().Be(input.IsActive);
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+    }
+
+    [Theory(DisplayName = nameof(ThrowWhenCanInstantiateCategory))]
+    [Trait("Application", "CreateCategory - Use Cases")]
+    [MemberData(
+        nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
+        parameters: 23, //Parametro do método GetInvalidInputs
+        MemberType = typeof(CreateCategoryTestDataGenerator) // Definfinido o tipo do MemberData (Classe da onde ele está sendo chamado).
+    )]
+    public async void ThrowWhenCanInstantiateCategory(CreateCategoryInput input, string exceptionMessage)
+    {
+
+        var useCase = new UseCases.CreateCategory(_fixture.GetUnitOfWorkMock().Object, _fixture.GetRepositoryMock().Object);
+
+        Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
+
+        await task.Should()
+            .ThrowAsync<EntityValidationException>()
+            .WithMessage(exceptionMessage);
+
     }
 }
