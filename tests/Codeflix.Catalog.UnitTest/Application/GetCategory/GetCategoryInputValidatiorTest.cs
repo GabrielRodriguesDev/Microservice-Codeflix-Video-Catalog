@@ -41,7 +41,7 @@ public class GetCategoryInputValidatiorTest
         validationResult.Should().NotBeNull();
         validationResult.IsValid.Should().BeFalse();
         validationResult.Errors.Should().HaveCount(1);
-        validationResult.Errors[0].ErrorMessage.Should().Be("'Id' must not be empty."); //Mensagem padrão de erro do FluentValidation para a validação criada.
+        validationResult.Errors[0].ErrorMessage.Should().Be("'Id' deve ser informado."); //Mensagem padrão de erro do FluentValidation para a validação criada.
 
     }
 

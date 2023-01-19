@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCases = Codeflix.Catalog.Application.UseCases.Category.GetCategory;
+using UseCase = Codeflix.Catalog.Application.UseCases.Category.GetCategory;
 
 namespace Codeflix.Catalog.UnitTest.Application.GetCategory;
 
@@ -35,8 +35,8 @@ public class GetCategoryTest
             )).ReturnsAsync(exampleCategory);
 
 
-        var input = new UseCases.GetCategoryInput(exampleCategory.Id);
-        var useCase = new UseCases.GetCategory(repositoryMock.Object);
+        var input = new UseCase.GetCategoryInput(exampleCategory.Id);
+        var useCase = new UseCase.GetCategory(repositoryMock.Object);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -84,10 +84,14 @@ public class GetCategoryTest
             )).ThrowsAsync(new NotFoundException($"Category '{exampleGuid}' not found."));
 
 
-        var input = new UseCases.GetCategoryInput(exampleGuid);
-        var useCase = new UseCases.GetCategory(repositoryMock.Object);
-        var task = async () => await useCase.Handle(input, CancellationToken.None);
+        var input = new UseCase.GetCategoryInput(exampleGuid);
+        var useCase = new UseCase.GetCategory(repositoryMock.Object);
 
+        /*
+         * A variavel task abaixo recebe uma Func assincrona com um objeto.
+         * em seguida pega o retorno disso e valida se de fato foi gerado uma exceção. (creio que seja em explicação, em questão de fluxo é esse).
+         */
+        var task = async () => await useCase.Handle(input, CancellationToken.None);
         await task.Should().ThrowAsync<NotFoundException>();
 
         repositoryMock.Verify(x => x.Get(

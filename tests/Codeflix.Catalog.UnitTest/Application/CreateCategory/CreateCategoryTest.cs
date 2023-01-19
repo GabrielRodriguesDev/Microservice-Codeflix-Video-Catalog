@@ -4,7 +4,7 @@ using Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCases = Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
+using UseCase = Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 
 namespace Codeflix.Catalog.UnitTest.Application.CreateCategory;
 
@@ -26,7 +26,7 @@ public class CreateCategoryTest : IClassFixture<CreateCategoryTestFixture>
         var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
         var repositoryMock = _fixture.GetRepositoryMock();
 
-        var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
+        var useCase = new UseCase.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
         var input = _fixture.GetInput();
 
@@ -75,7 +75,7 @@ public class CreateCategoryTest : IClassFixture<CreateCategoryTestFixture>
     public async void ThrowWhenCanInstantiateCategory(CreateCategoryInput input, string exceptionMessage)
     {
 
-        var useCase = new UseCases.CreateCategory(_fixture.GetUnitOfWorkMock().Object, _fixture.GetRepositoryMock().Object);
+        var useCase = new UseCase.CreateCategory(_fixture.GetUnitOfWorkMock().Object, _fixture.GetRepositoryMock().Object);
 
         Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
 
