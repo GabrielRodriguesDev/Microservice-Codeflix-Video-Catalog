@@ -7,4 +7,5 @@ public interface IGenericRepository<TAggregate> : IRepository
     public Task<TAggregate> Get(Guid id, CancellationToken cancellationToken);    
     public Task Delete(TAggregate aggregate, CancellationToken cancellationToken);
 
+    public Task Update(TAggregate aggregate, CancellationToken cancellationToken);
 }
